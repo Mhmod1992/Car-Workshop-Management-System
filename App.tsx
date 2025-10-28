@@ -17,11 +17,12 @@ import LoginPage from './pages/LoginPage.tsx';
 const App: React.FC = () => {
   const { page, authUser, setPage, requests, confirmModal, hideConfirmModal, selectedRequestId } = useAppContext();
 
+  // Static page titles to avoid complex expressions during initialization
   const pageTitles: { [key in string]: string } = {
     dashboard: 'لوحة التحكم الرئيسية',
     requests: 'قائمة الطلبات',
     'new-request': 'إنشاء طلب جديد',
-    'fill-request': `تعبئة طلب #${requests.find(r => r.id === selectedRequestId)?.requestNumber || ''}`,
+    'fill-request': 'تعبئة طلب',
     'print-report': 'معاينة وتعديل التقرير',
     clients: 'إدارة العملاء',
     reports: 'التقارير',
@@ -55,6 +56,15 @@ const App: React.FC = () => {
     return <LoginPage />;
   }
 
+  // Dynamically generate the title for pages that need it
+  let currentPageTitle = pageTitles[page] || 'نظام الورشة';
+  if (page === 'fill-request' || page === 'print-report') {
+      const requestNumber = requests.find(r => r.id === selectedRequestId)?.requestNumber;
+      if (requestNumber) {
+        currentPageTitle = `${pageTitles[page]} #${requestNumber}`;
+      }
+  }
+
   // Hide header for special pages like print preview
   const showHeader = !['print-report'].includes(page);
   const showNewRequestButton = !['new-request', 'settings', 'fill-request', 'print-report'].includes(page);
@@ -65,7 +75,7 @@ const App: React.FC = () => {
       <Sidebar />
       <div className="flex-1 flex flex-col overflow-hidden">
         {showHeader && (
-           <Header title={pageTitles[page] || 'نظام الورشة'}>
+           <Header title={currentPageTitle}>
               {authUser?.permissions.canCreateRequests && showNewRequestButton && (
                 <button 
                   onClick={() => setPage('new-request')}
