@@ -350,7 +350,6 @@ const ReportSettings: React.FC = () => {
     const [isInspectorVisible, setIsInspectorVisible] = useState(true);
     const [inspectorTab, setInspectorTab] = useState<'blocks' | 'page'>('blocks');
     
-    // Fix: Initialize useState with null instead of the variable itself.
     const [actionState, setActionState] = useState<{
         type: 'move' | 'resize';
         blockId: string;
