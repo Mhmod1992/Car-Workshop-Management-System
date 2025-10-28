@@ -25,8 +25,8 @@ const App: React.FC = () => {
     selectedRequestId,
   } = useAppContext();
 
-  // ✅ تم تصحيح هذا السطر باستخدام Record<string, string>
-  const pageTitles: Record<string, string> = {
+  // ✅ تم تصحيح هذا السطر باستخدام صيغة يفهمها المترجم بشكل أفضل
+  const pageTitles: { [key: string]: string } = {
     dashboard: 'لوحة التحكم الرئيسية',
     requests: 'قائمة الطلبات',
     'new-request': 'إنشاء طلب جديد',
