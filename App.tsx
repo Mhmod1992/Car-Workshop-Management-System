@@ -15,10 +15,18 @@ import PrintReportPage from './pages/PrintReportPage.tsx';
 import LoginPage from './pages/LoginPage.tsx';
 
 const App: React.FC = () => {
-  const { page, authUser, setPage, requests, confirmModal, hideConfirmModal, selectedRequestId } = useAppContext();
+  const {
+    page,
+    authUser,
+    setPage,
+    requests,
+    confirmModal,
+    hideConfirmModal,
+    selectedRequestId,
+  } = useAppContext();
 
-  // Static page titles to avoid complex expressions during initialization
-  const pageTitles: { [key in string]: string } = {
+  // ✅ تم تصحيح هذا السطر باستخدام Record<string, string>
+  const pageTitles: Record<string, string> = {
     dashboard: 'لوحة التحكم الرئيسية',
     requests: 'قائمة الطلبات',
     'new-request': 'إنشاء طلب جديد',
@@ -44,64 +52,71 @@ const App: React.FC = () => {
       case 'clients':
         return <ClientsManagement />;
       case 'reports':
-          return <RequestsList />; // Reports page reuses the requests list with its filters
+        return <RequestsList />; // Reports page reuses the requests list with its filters
       case 'settings':
         return <Settings />;
       default:
         return <Dashboard />;
     }
   };
-  
+
   if (!authUser) {
     return <LoginPage />;
   }
 
-  // Dynamically generate the title for pages that need it
+  // توليد العنوان الديناميكي للصفحة
   let currentPageTitle = pageTitles[page] || 'نظام الورشة';
   if (page === 'fill-request' || page === 'print-report') {
-      const requestNumber = requests.find(r => r.id === selectedRequestId)?.requestNumber;
-      if (requestNumber) {
-        currentPageTitle = `${pageTitles[page]} #${requestNumber.toLocaleString('en-US', { useGrouping: false })}`;
-      }
+    const requestNumber = requests.find(
+      (r) => r.id === selectedRequestId
+    )?.requestNumber;
+    if (requestNumber) {
+      currentPageTitle = `${pageTitles[page]} #${requestNumber.toLocaleString(
+        'en-US',
+        { useGrouping: false }
+      )}`;
+    }
   }
 
-  // Hide header for special pages like print preview
   const showHeader = !['print-report'].includes(page);
-  const showNewRequestButton = !['new-request', 'settings', 'fill-request', 'print-report'].includes(page);
-
+  const showNewRequestButton = ![
+    'new-request',
+    'settings',
+    'fill-request',
+    'print-report',
+  ].includes(page);
 
   return (
     <div className="flex h-screen bg-slate-100">
       <Sidebar />
       <div className="flex-1 flex flex-col overflow-hidden">
         {showHeader && (
-           <Header title={currentPageTitle}>
-              {authUser?.permissions.canCreateRequests && showNewRequestButton && (
-                <button 
-                  onClick={() => setPage('new-request')}
-                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 flex items-center transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105">
-                  <Icon name="add" className="w-5 h-5 me-2" />
-                  إنشاء طلب جديد
-                </button>
-              )}
-           </Header>
+          <Header title={currentPageTitle}>
+            {authUser?.permissions.canCreateRequests && showNewRequestButton && (
+              <button
+                onClick={() => setPage('new-request')}
+                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 flex items-center transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105"
+              >
+                <Icon name="add" className="w-5 h-5 me-2" />
+                إنشاء طلب جديد
+              </button>
+            )}
+          </Header>
         )}
         <main className="flex-1 overflow-x-hidden overflow-y-auto p-6">
-          <div className="animate-fade-in">
-            {renderPage()}
-          </div>
+          <div className="animate-fade-in">{renderPage()}</div>
         </main>
       </div>
-       <NotificationContainer />
-       {confirmModal.isOpen && confirmModal.options && (
-          <ConfirmModal
-              isOpen={confirmModal.isOpen}
-              onClose={hideConfirmModal}
-              onConfirm={confirmModal.options.onConfirm}
-              title={confirmModal.options.title}
-          >
-              {confirmModal.options.message}
-          </ConfirmModal>
+      <NotificationContainer />
+      {confirmModal.isOpen && confirmModal.options && (
+        <ConfirmModal
+          isOpen={confirmModal.isOpen}
+          onClose={hideConfirmModal}
+          onConfirm={confirmModal.options.onConfirm}
+          title={confirmModal.options.title}
+        >
+          {confirmModal.options.message}
+        </ConfirmModal>
       )}
     </div>
   );
