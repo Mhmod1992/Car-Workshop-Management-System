@@ -48,7 +48,9 @@ const findingIds = {
 const inspectionTypeIds = { insp1: uuidv4(), insp2: uuidv4(), insp3: uuidv4() };
 const brokerIds = { broker1: uuidv4(), broker2: uuidv4() };
 
-export const initialClients: Client[] = [];
+export const initialClients: Client[] = [
+    { id: clientIds.client1, name: 'عميل تجريبي', phone: '0512345678' },
+];
 
 export const initialCarMakes: CarMake[] = [
     { id: makeIds.make1, nameAr: 'تويوتا', nameEn: 'Toyota' },
@@ -78,7 +80,9 @@ export const initialCarModels: CarModel[] = [
     { id: modelIds.modelHondaAccord, makeId: makeIds.makeHonda, nameAr: 'أكورد', nameEn: 'Accord' },
 ];
 
-export const initialCars: Car[] = [];
+export const initialCars: Car[] = [
+    { id: carIds.car1, makeId: makeIds.make1, modelId: modelIds.model1, year: 2022, plateNumber: 'ح ط ى 9876' },
+];
 
 export const initialCustomFindingCategories: CustomFindingCategory[] = [
     { id: categoryIds.cat1, name: 'البودي الخارجي' },
@@ -113,7 +117,30 @@ export const initialInspectionTypes: InspectionType[] = [
     { id: inspectionTypeIds.insp3, name: 'فحص بودي وشاصيه', price: 250, fields: [], findingCategoryIds: [categoryIds.cat1, categoryIds.cat6] },
 ];
 
-export const initialRequests: WorkshopRequest[] = [];
+export const initialRequests: WorkshopRequest[] = [
+    {
+        id: 'sample-request-1',
+        requestNumber: 1000,
+        clientId: clientIds.client1,
+        carId: carIds.car1,
+        inspectionTypeId: inspectionTypeIds.insp1,
+        paymentType: PaymentType.Card,
+        price: 500,
+        status: RequestStatus.InProgress,
+        createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(), // Yesterday
+        employeeId: 'employee',
+        inspectionData: {},
+        generalNotes: [{id: 'sample-note-1', text: 'تم فحص السيارة بشكل مبدئي.'}],
+        structuredFindings: [
+            { findingId: findingIds.find1, findingName: 'الصدام الأمامي', value: 'مرشوش', categoryId: categoryIds.cat1 },
+            { findingId: findingIds.find3, findingName: 'تهريب زيت المحرك', value: 'يوجد تسريب', categoryId: categoryIds.cat2 },
+            { findingId: findingIds.find7, findingName: 'الإطار الأمامي يمين', value: 'نصف عمر', categoryId: categoryIds.cat5 },
+        ],
+        categoryNotes: {
+            [categoryIds.cat1]: [{id: 'sample-cat-note-1', text: 'رش تجميلي فقط.'}]
+        },
+    }
+];
 
 export const initialEmployees: Employee[] = [
     { 
