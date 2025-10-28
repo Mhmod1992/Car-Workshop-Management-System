@@ -15,13 +15,13 @@ import PrintReportPage from './pages/PrintReportPage.tsx';
 import LoginPage from './pages/LoginPage.tsx';
 
 const App: React.FC = () => {
-  const { page, authUser, setPage, requests, confirmModal, hideConfirmModal } = useAppContext();
+  const { page, authUser, setPage, requests, confirmModal, hideConfirmModal, selectedRequestId } = useAppContext();
 
   const pageTitles: { [key in string]: string } = {
     dashboard: 'لوحة التحكم الرئيسية',
     requests: 'قائمة الطلبات',
     'new-request': 'إنشاء طلب جديد',
-    'fill-request': `تعبئة طلب #${requests.find(r => r.id === useAppContext().selectedRequestId)?.requestNumber || ''}`,
+    'fill-request': `تعبئة طلب #${requests.find(r => r.id === selectedRequestId)?.requestNumber || ''}`,
     'print-report': 'معاينة وتعديل التقرير',
     clients: 'إدارة العملاء',
     reports: 'التقارير',
