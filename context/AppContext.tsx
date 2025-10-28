@@ -179,18 +179,24 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         }
       };
 
-      await Promise.all([
-          fetchOrSeed('clients', setClients, initialClients),
-          fetchOrSeed('car_makes', setCarMakes, initialCarMakes),
-          fetchOrSeed('car_models', setCarModels, initialCarModels),
-          fetchOrSeed('cars', setCars, initialCars),
-          fetchOrSeed('inspection_types', setInspectionTypes, initialInspectionTypes),
-          fetchOrSeed('requests', setRequests, initialRequests),
-          fetchOrSeed('employees', setEmployees, initialEmployees),
-          fetchOrSeed('brokers', setBrokers, initialBrokers),
-          fetchOrSeed('custom_finding_categories', setCustomFindingCategories, initialCustomFindingCategories),
-          fetchOrSeed('predefined_findings', setPredefinedFindings, initialPredefinedFindings)
-      ]);
+      // Seed tables sequentially to avoid foreign key violations.
+      // Batch 1: No dependencies
+      await fetchOrSeed('clients', setClients, initialClients);
+      await fetchOrSeed('car_makes', setCarMakes, initialCarMakes);
+      await fetchOrSeed('employees', setEmployees, initialEmployees);
+      await fetchOrSeed('brokers', setBrokers, initialBrokers);
+      await fetchOrSeed('custom_finding_categories', setCustomFindingCategories, initialCustomFindingCategories);
+
+      // Batch 2: Depends on Batch 1
+      await fetchOrSeed('car_models', setCarModels, initialCarModels);
+      await fetchOrSeed('predefined_findings', setPredefinedFindings, initialPredefinedFindings);
+      await fetchOrSeed('inspection_types', setInspectionTypes, initialInspectionTypes);
+      
+      // Batch 3: Depends on Batch 2
+      await fetchOrSeed('cars', setCars, initialCars);
+
+      // Batch 4: Depends on multiple previous batches
+      await fetchOrSeed('requests', setRequests, initialRequests);
 
       // Special handling for settings (single row table)
       const { data: settingsData, error: settingsError } = await supabase.from('settings').select('*').limit(1);

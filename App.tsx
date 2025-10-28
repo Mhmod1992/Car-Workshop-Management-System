@@ -61,7 +61,7 @@ const App: React.FC = () => {
   if (page === 'fill-request' || page === 'print-report') {
       const requestNumber = requests.find(r => r.id === selectedRequestId)?.requestNumber;
       if (requestNumber) {
-        currentPageTitle = `${pageTitles[page]} #${requestNumber}`;
+        currentPageTitle = `${pageTitles[page]} #${requestNumber.toLocaleString('en-US', { useGrouping: false })}`;
       }
   }
 

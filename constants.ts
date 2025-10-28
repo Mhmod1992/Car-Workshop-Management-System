@@ -16,135 +16,178 @@ import {
 } from './types.ts';
 import { v4 as uuidv4 } from 'uuid';
 
-// Generate UUIDs for all entities to ensure compatibility with Supabase's uuid type
-const clientIds = {
-    client1: uuidv4(), client2: uuidv4(), client3: uuidv4(), client4: uuidv4(),
-    client5: uuidv4(), client6: uuidv4(), client7: uuidv4()
-};
-const makeIds = {
-    make1: uuidv4(), make2: uuidv4(), make3: uuidv4(), make4: uuidv4(),
-    make5: uuidv4(), make6: uuidv4(), makeHonda: uuidv4()
-};
-const modelIds = {
-    model1: uuidv4(), model2: uuidv4(), model13: uuidv4(), model3: uuidv4(),
-    model4: uuidv4(), model14: uuidv4(), model5: uuidv4(), model15: uuidv4(),
-    model6: uuidv4(), model7: uuidv4(), model8: uuidv4(), model9: uuidv4(),
-    model10: uuidv4(), model11: uuidv4(), modelHondaAccord: uuidv4()
-};
-const carIds = {
-    car1: uuidv4(), car2: uuidv4(), car3: uuidv4(), car4: uuidv4(),
-    car5: uuidv4(), car6: uuidv4(), car7: uuidv4()
-};
-const categoryIds = {
-    cat1: uuidv4(), cat2: uuidv4(), cat3: uuidv4(),
-    cat4: uuidv4(), cat5: uuidv4(), cat6: uuidv4()
-};
-const findingIds = {
-    find1: uuidv4(), find2: uuidv4(), find10: uuidv4(), find11: uuidv4(),
-    find3: uuidv4(), find12: uuidv4(), find13: uuidv4(), find14: uuidv4(),
-    find15: uuidv4(), find4: uuidv4(), find5: uuidv4(), find6: uuidv4(),
-    find7: uuidv4(), find8: uuidv4(), find9: uuidv4()
-};
-const inspectionTypeIds = { insp1: uuidv4(), insp2: uuidv4(), insp3: uuidv4() };
-const brokerIds = { broker1: uuidv4(), broker2: uuidv4() };
+// --- IDs for initial seed data ---
+// By defining these as top-level constants, we ensure the same UUID is used across different initial data arrays,
+// preventing foreign key constraint violations during the seeding process.
+
+// Core Entities
+const SEED_CLIENT_1_ID = uuidv4();
+const SEED_CAR_1_ID = uuidv4();
+const SEED_REQUEST_1_ID = uuidv4();
+
+// Relational Data for Car
+const SEED_MAKE_TOYOTA_ID = uuidv4();
+const SEED_MAKE_HYUNDAI_ID = uuidv4();
+const SEED_MAKE_FORD_ID = uuidv4();
+const SEED_MAKE_NISSAN_ID = uuidv4();
+const SEED_MAKE_MERCEDES_ID = uuidv4();
+const SEED_MAKE_KIA_ID = uuidv4();
+const SEED_MAKE_HONDA_ID = uuidv4();
+
+const SEED_MODEL_CAMRY_ID = uuidv4();
+const SEED_MODEL_COROLLA_ID = uuidv4();
+const SEED_MODEL_LANDCRUISER_ID = uuidv4();
+const SEED_MODEL_ELANTRA_ID = uuidv4();
+const SEED_MODEL_ACCENT_ID = uuidv4();
+const SEED_MODEL_TUCSON_ID = uuidv4();
+const SEED_MODEL_TAURUS_ID = uuidv4();
+const SEED_MODEL_EXPLORER_ID = uuidv4();
+const SEED_MODEL_SUNNY_ID = uuidv4();
+const SEED_MODEL_PATROL_ID = uuidv4();
+const SEED_MODEL_ECLASS_ID = uuidv4();
+const SEED_MODEL_SCLASS_ID = uuidv4();
+const SEED_MODEL_RIO_ID = uuidv4();
+const SEED_MODEL_SPORTAGE_ID = uuidv4();
+const SEED_MODEL_ACCORD_ID = uuidv4();
+
+// Inspection Data
+const SEED_CAT_BODY_ID = uuidv4();
+const SEED_CAT_ENGINE_ID = uuidv4();
+const SEED_CAT_SUSPENSION_ID = uuidv4();
+const SEED_CAT_BRAKES_ID = uuidv4();
+const SEED_CAT_TIRES_ID = uuidv4();
+const SEED_CAT_CHASSIS_ID = uuidv4();
+
+const SEED_FIND_FRONT_BUMPER_ID = uuidv4();
+const SEED_FIND_RIGHT_FENDER_ID = uuidv4();
+const SEED_FIND_ROOF_ID = uuidv4();
+const SEED_FIND_DRIVER_DOOR_ID = uuidv4();
+const SEED_FIND_ENGINE_OIL_LEAK_ID = uuidv4();
+const SEED_FIND_ENGINE_OIL_LEVEL_ID = uuidv4();
+const SEED_FIND_BATTERY_ID = uuidv4();
+const SEED_FIND_FRONT_SHOCKS_ID = uuidv4();
+const SEED_FIND_REAR_SHOCKS_ID = uuidv4();
+const SEED_FIND_BRAKE_FLUID_ID = uuidv4();
+const SEED_FIND_ROTORS_ID = uuidv4();
+const SEED_FIND_BRAKE_PADS_ID = uuidv4();
+const SEED_FIND_FRONT_RIGHT_TIRE_ID = uuidv4();
+const SEED_FIND_REAR_LEFT_TIRE_ID = uuidv4();
+const SEED_FIND_CHASSIS_DAMAGE_ID = uuidv4();
+
+const SEED_INSP_TYPE_COMPLETE_ID = uuidv4();
+const SEED_INSP_TYPE_COMPUTER_ID = uuidv4();
+const SEED_INSP_TYPE_BODY_ID = uuidv4();
+
+// People & Organizations
+const SEED_EMPLOYEE_ADMIN_ID = uuidv4();
+const SEED_EMPLOYEE_MANAGER_ID = uuidv4();
+const SEED_EMPLOYEE_INSPECTOR_ID = uuidv4();
+const SEED_BROKER_1_ID = uuidv4();
+const SEED_BROKER_2_ID = uuidv4();
+
+// Notes
+const SEED_NOTE_GENERAL_1_ID = uuidv4();
+const SEED_NOTE_CATEGORY_1_ID = uuidv4();
+
+// --- Initial Data Arrays ---
 
 export const initialClients: Client[] = [
-    { id: clientIds.client1, name: 'عميل تجريبي', phone: '0512345678' },
+    { id: SEED_CLIENT_1_ID, name: 'عميل تجريبي', phone: '0512345678' },
 ];
 
 export const initialCarMakes: CarMake[] = [
-    { id: makeIds.make1, nameAr: 'تويوتا', nameEn: 'Toyota' },
-    { id: makeIds.make2, nameAr: 'هيونداي', nameEn: 'Hyundai' },
-    { id: makeIds.make3, nameAr: 'فورد', nameEn: 'Ford' },
-    { id: makeIds.make4, nameAr: 'نيسان', nameEn: 'Nissan' },
-    { id: makeIds.make5, nameAr: 'مرسيدس-بنز', nameEn: 'Mercedes-Benz' },
-    { id: makeIds.make6, nameAr: 'كيا', nameEn: 'KIA' },
-    { id: makeIds.makeHonda, nameAr: 'هوندا', nameEn: 'Honda' },
+    { id: SEED_MAKE_TOYOTA_ID, nameAr: 'تويوتا', nameEn: 'Toyota' },
+    { id: SEED_MAKE_HYUNDAI_ID, nameAr: 'هيونداي', nameEn: 'Hyundai' },
+    { id: SEED_MAKE_FORD_ID, nameAr: 'فورد', nameEn: 'Ford' },
+    { id: SEED_MAKE_NISSAN_ID, nameAr: 'نيسان', nameEn: 'Nissan' },
+    { id: SEED_MAKE_MERCEDES_ID, nameAr: 'مرسيدس-بنز', nameEn: 'Mercedes-Benz' },
+    { id: SEED_MAKE_KIA_ID, nameAr: 'كيا', nameEn: 'KIA' },
+    { id: SEED_MAKE_HONDA_ID, nameAr: 'هوندا', nameEn: 'Honda' },
 ];
 
 export const initialCarModels: CarModel[] = [
-    { id: modelIds.model1, makeId: makeIds.make1, nameAr: 'كامري', nameEn: 'Camry' },
-    { id: modelIds.model2, makeId: makeIds.make1, nameAr: 'كورولا', nameEn: 'Corolla' },
-    { id: modelIds.model13, makeId: makeIds.make1, nameAr: 'لاندكروزر', nameEn: 'Land Cruiser' },
-    { id: modelIds.model3, makeId: makeIds.make2, nameAr: 'إلنترا', nameEn: 'Elantra' },
-    { id: modelIds.model4, makeId: makeIds.make2, nameAr: 'أكسنت', nameEn: 'Accent' },
-    { id: modelIds.model14, makeId: makeIds.make2, nameAr: 'توسان', nameEn: 'Tucson' },
-    { id: modelIds.model5, makeId: makeIds.make3, nameAr: 'تورس', nameEn: 'Taurus' },
-    { id: modelIds.model15, makeId: makeIds.make3, nameAr: 'إكسبلورر', nameEn: 'Explorer' },
-    { id: modelIds.model6, makeId: makeIds.make4, nameAr: 'صني', nameEn: 'Sunny' },
-    { id: modelIds.model7, makeId: makeIds.make4, nameAr: 'باترول', nameEn: 'Patrol' },
-    { id: modelIds.model8, makeId: makeIds.make5, nameAr: 'الفئة E', nameEn: 'E-Class' },
-    { id: modelIds.model9, makeId: makeIds.make5, nameAr: 'الفئة S', nameEn: 'S-Class' },
-    { id: modelIds.model10, makeId: makeIds.make6, nameAr: 'ريو', nameEn: 'Rio' },
-    { id: modelIds.model11, makeId: makeIds.make6, nameAr: 'سبورتاج', nameEn: 'Sportage' },
-    { id: modelIds.modelHondaAccord, makeId: makeIds.makeHonda, nameAr: 'أكورد', nameEn: 'Accord' },
+    { id: SEED_MODEL_CAMRY_ID, makeId: SEED_MAKE_TOYOTA_ID, nameAr: 'كامري', nameEn: 'Camry' },
+    { id: SEED_MODEL_COROLLA_ID, makeId: SEED_MAKE_TOYOTA_ID, nameAr: 'كورولا', nameEn: 'Corolla' },
+    { id: SEED_MODEL_LANDCRUISER_ID, makeId: SEED_MAKE_TOYOTA_ID, nameAr: 'لاندكروزر', nameEn: 'Land Cruiser' },
+    { id: SEED_MODEL_ELANTRA_ID, makeId: SEED_MAKE_HYUNDAI_ID, nameAr: 'إلنترا', nameEn: 'Elantra' },
+    { id: SEED_MODEL_ACCENT_ID, makeId: SEED_MAKE_HYUNDAI_ID, nameAr: 'أكسنت', nameEn: 'Accent' },
+    { id: SEED_MODEL_TUCSON_ID, makeId: SEED_MAKE_HYUNDAI_ID, nameAr: 'توسان', nameEn: 'Tucson' },
+    { id: SEED_MODEL_TAURUS_ID, makeId: SEED_MAKE_FORD_ID, nameAr: 'تورس', nameEn: 'Taurus' },
+    { id: SEED_MODEL_EXPLORER_ID, makeId: SEED_MAKE_FORD_ID, nameAr: 'إكسبلورر', nameEn: 'Explorer' },
+    { id: SEED_MODEL_SUNNY_ID, makeId: SEED_MAKE_NISSAN_ID, nameAr: 'صني', nameEn: 'Sunny' },
+    { id: SEED_MODEL_PATROL_ID, makeId: SEED_MAKE_NISSAN_ID, nameAr: 'باترول', nameEn: 'Patrol' },
+    { id: SEED_MODEL_ECLASS_ID, makeId: SEED_MAKE_MERCEDES_ID, nameAr: 'الفئة E', nameEn: 'E-Class' },
+    { id: SEED_MODEL_SCLASS_ID, makeId: SEED_MAKE_MERCEDES_ID, nameAr: 'الفئة S', nameEn: 'S-Class' },
+    { id: SEED_MODEL_RIO_ID, makeId: SEED_MAKE_KIA_ID, nameAr: 'ريو', nameEn: 'Rio' },
+    { id: SEED_MODEL_SPORTAGE_ID, makeId: SEED_MAKE_KIA_ID, nameAr: 'سبورتاج', nameEn: 'Sportage' },
+    { id: SEED_MODEL_ACCORD_ID, makeId: SEED_MAKE_HONDA_ID, nameAr: 'أكورد', nameEn: 'Accord' },
 ];
 
 export const initialCars: Car[] = [
-    { id: carIds.car1, makeId: makeIds.make1, modelId: modelIds.model1, year: 2022, plateNumber: 'ح ط ى 9876' },
+    { id: SEED_CAR_1_ID, makeId: SEED_MAKE_TOYOTA_ID, modelId: SEED_MODEL_CAMRY_ID, year: 2022, plateNumber: 'ح ط ى 9876' },
 ];
 
 export const initialCustomFindingCategories: CustomFindingCategory[] = [
-    { id: categoryIds.cat1, name: 'البودي الخارجي' },
-    { id: categoryIds.cat2, name: 'المحرك' },
-    { id: categoryIds.cat3, name: 'نظام التعليق' },
-    { id: categoryIds.cat4, name: 'نظام الفرامل' },
-    { id: categoryIds.cat5, name: 'الإطارات' },
-    { id: categoryIds.cat6, name: 'الشاصيه' },
+    { id: SEED_CAT_BODY_ID, name: 'البودي الخارجي' },
+    { id: SEED_CAT_ENGINE_ID, name: 'المحرك' },
+    { id: SEED_CAT_SUSPENSION_ID, name: 'نظام التعليق' },
+    { id: SEED_CAT_BRAKES_ID, name: 'نظام الفرامل' },
+    { id: SEED_CAT_TIRES_ID, name: 'الإطارات' },
+    { id: SEED_CAT_CHASSIS_ID, name: 'الشاصيه' },
 ];
 
 export const initialPredefinedFindings: PredefinedFinding[] = [
-    { id: findingIds.find1, categoryId: categoryIds.cat1, name: 'الصدام الأمامي', nameEn: 'Front Bumper', options: ['سليم', 'مرشوش', 'معجون', 'تالف'], referenceImage: 'https://storage.googleapis.com/proudcity/mebanenc/uploads/2021/03/placeholder-image.png' },
-    { id: findingIds.find2, categoryId: categoryIds.cat1, name: 'الرفرف الأمامي يمين', nameEn: 'Front Right Fender', options: ['سليم', 'مرشوش', 'معجون', 'تالف'], referenceImage: 'https://i.imgur.com/g65a12B.png' },
-    { id: findingIds.find10, categoryId: categoryIds.cat1, name: 'السقف', nameEn: 'Roof', options: ['سليم', 'مرشوش', 'متأثر بضربات برد', 'تالف'] },
-    { id: findingIds.find11, categoryId: categoryIds.cat1, name: 'باب السائق', nameEn: 'Driver Door', options: ['سليم', 'مرشوش', 'معجون', 'تالف'] },
-    { id: findingIds.find3, categoryId: categoryIds.cat2, name: 'تهريب زيت المحرك', nameEn: 'Engine Oil Leak', options: ['لا يوجد', 'يوجد تسريب', 'يوجد ترشيح'] },
-    { id: findingIds.find12, categoryId: categoryIds.cat2, name: 'مستوى زيت المحرك', nameEn: 'Engine Oil Level', options: ['طبيعي', 'ناقص', 'زائد'] },
-    { id: findingIds.find13, categoryId: categoryIds.cat2, name: 'حالة البطارية', nameEn: 'Battery Condition', options: ['جيدة', 'ضعيفة', 'تالفة'] },
-    { id: findingIds.find14, categoryId: categoryIds.cat3, name: 'المساعدات الأمامية', nameEn: 'Front Shock Absorbers', options: ['جيدة', 'تحتاج تغيير', 'مهربة زيت'] },
-    { id: findingIds.find15, categoryId: categoryIds.cat3, name: 'المساعدات الخلفية', nameEn: 'Rear Shock Absorbers', options: ['جيدة', 'تحتاج تغيير', 'مهربة زيت'] },
-    { id: findingIds.find4, categoryId: categoryIds.cat4, name: 'فحص زيت الفرامل', nameEn: 'Brake Fluid Check', options: ['جيد', 'يحتاج تغيير'] },
-    { id: findingIds.find5, categoryId: categoryIds.cat4, name: 'حالة الهوبات', nameEn: 'Rotor Condition', options: ['جيدة', 'تحتاج خرط', 'تحتاج تغيير'] },
-    { id: findingIds.find6, categoryId: categoryIds.cat4, name: 'حالة الأقمشة', nameEn: 'Brake Pad Condition', options: ['جيدة', 'نصف عمر', 'تحتاج تغيير'] },
-    { id: findingIds.find7, categoryId: categoryIds.cat5, name: 'الإطار الأمامي يمين', nameEn: 'Front Right Tire', options: ['جديد', 'جيد', 'نصف عمر', 'ممسوح'] },
-    { id: findingIds.find8, categoryId: categoryIds.cat5, name: 'الإطار الخلفي يسار', nameEn: 'Rear Left Tire', options: ['جديد', 'جيد', 'نصف عمر', 'ممسوح'] },
-    { id: findingIds.find9, categoryId: categoryIds.cat6, name: 'ضربة شاصي أمامي', nameEn: 'Front Chassis Damage', options: ['لا يوجد', 'يوجد'] },
+    { id: SEED_FIND_FRONT_BUMPER_ID, categoryId: SEED_CAT_BODY_ID, name: 'الصدام الأمامي', nameEn: 'Front Bumper', options: ['سليم', 'مرشوش', 'معجون', 'تالف'], referenceImage: 'https://storage.googleapis.com/proudcity/mebanenc/uploads/2021/03/placeholder-image.png' },
+    { id: SEED_FIND_RIGHT_FENDER_ID, categoryId: SEED_CAT_BODY_ID, name: 'الرفرف الأمامي يمين', nameEn: 'Front Right Fender', options: ['سليم', 'مرشوش', 'معجون', 'تالف'], referenceImage: 'https://i.imgur.com/g65a12B.png' },
+    { id: SEED_FIND_ROOF_ID, categoryId: SEED_CAT_BODY_ID, name: 'السقف', nameEn: 'Roof', options: ['سليم', 'مرشوش', 'متأثر بضربات برد', 'تالف'] },
+    { id: SEED_FIND_DRIVER_DOOR_ID, categoryId: SEED_CAT_BODY_ID, name: 'باب السائق', nameEn: 'Driver Door', options: ['سليم', 'مرشوش', 'معجون', 'تالف'] },
+    { id: SEED_FIND_ENGINE_OIL_LEAK_ID, categoryId: SEED_CAT_ENGINE_ID, name: 'تهريب زيت المحرك', nameEn: 'Engine Oil Leak', options: ['لا يوجد', 'يوجد تسريب', 'يوجد ترشيح'] },
+    { id: SEED_FIND_ENGINE_OIL_LEVEL_ID, categoryId: SEED_CAT_ENGINE_ID, name: 'مستوى زيت المحرك', nameEn: 'Engine Oil Level', options: ['طبيعي', 'ناقص', 'زائد'] },
+    { id: SEED_FIND_BATTERY_ID, categoryId: SEED_CAT_ENGINE_ID, name: 'حالة البطارية', nameEn: 'Battery Condition', options: ['جيدة', 'ضعيفة', 'تالفة'] },
+    { id: SEED_FIND_FRONT_SHOCKS_ID, categoryId: SEED_CAT_SUSPENSION_ID, name: 'المساعدات الأمامية', nameEn: 'Front Shock Absorbers', options: ['جيدة', 'تحتاج تغيير', 'مهربة زيت'] },
+    { id: SEED_FIND_REAR_SHOCKS_ID, categoryId: SEED_CAT_SUSPENSION_ID, name: 'المساعدات الخلفية', nameEn: 'Rear Shock Absorbers', options: ['جيدة', 'تحتاج تغيير', 'مهربة زيت'] },
+    { id: SEED_FIND_BRAKE_FLUID_ID, categoryId: SEED_CAT_BRAKES_ID, name: 'فحص زيت الفرامل', nameEn: 'Brake Fluid Check', options: ['جيد', 'يحتاج تغيير'] },
+    { id: SEED_FIND_ROTORS_ID, categoryId: SEED_CAT_BRAKES_ID, name: 'حالة الهوبات', nameEn: 'Rotor Condition', options: ['جيدة', 'تحتاج خرط', 'تحتاج تغيير'] },
+    { id: SEED_FIND_BRAKE_PADS_ID, categoryId: SEED_CAT_BRAKES_ID, name: 'حالة الأقمشة', nameEn: 'Brake Pad Condition', options: ['جيدة', 'نصف عمر', 'تحتاج تغيير'] },
+    { id: SEED_FIND_FRONT_RIGHT_TIRE_ID, categoryId: SEED_CAT_TIRES_ID, name: 'الإطار الأمامي يمين', nameEn: 'Front Right Tire', options: ['جديد', 'جيد', 'نصف عمر', 'ممسوح'] },
+    { id: SEED_FIND_REAR_LEFT_TIRE_ID, categoryId: SEED_CAT_TIRES_ID, name: 'الإطار الخلفي يسار', nameEn: 'Rear Left Tire', options: ['جديد', 'جيد', 'نصف عمر', 'ممسوح'] },
+    { id: SEED_FIND_CHASSIS_DAMAGE_ID, categoryId: SEED_CAT_CHASSIS_ID, name: 'ضربة شاصي أمامي', nameEn: 'Front Chassis Damage', options: ['لا يوجد', 'يوجد'] },
 ];
 
 export const initialInspectionTypes: InspectionType[] = [
-    { id: inspectionTypeIds.insp1, name: 'Complete Diagnosis', price: 500, fields: [], findingCategoryIds: [categoryIds.cat1, categoryIds.cat2, categoryIds.cat3, categoryIds.cat4, categoryIds.cat5, categoryIds.cat6] },
-    { id: inspectionTypeIds.insp2, name: 'فحص كمبيوتر', price: 150, fields: [], findingCategoryIds: [] },
-    { id: inspectionTypeIds.insp3, name: 'فحص بودي وشاصيه', price: 250, fields: [], findingCategoryIds: [categoryIds.cat1, categoryIds.cat6] },
+    { id: SEED_INSP_TYPE_COMPLETE_ID, name: 'Complete Diagnosis', price: 500, fields: [], findingCategoryIds: [SEED_CAT_BODY_ID, SEED_CAT_ENGINE_ID, SEED_CAT_SUSPENSION_ID, SEED_CAT_BRAKES_ID, SEED_CAT_TIRES_ID, SEED_CAT_CHASSIS_ID] },
+    { id: SEED_INSP_TYPE_COMPUTER_ID, name: 'فحص كمبيوتر', price: 150, fields: [], findingCategoryIds: [] },
+    { id: SEED_INSP_TYPE_BODY_ID, name: 'فحص بودي وشاصيه', price: 250, fields: [], findingCategoryIds: [SEED_CAT_BODY_ID, SEED_CAT_CHASSIS_ID] },
 ];
 
 export const initialRequests: WorkshopRequest[] = [
     {
-        id: 'sample-request-1',
+        id: SEED_REQUEST_1_ID,
         requestNumber: 1000,
-        clientId: clientIds.client1,
-        carId: carIds.car1,
-        inspectionTypeId: inspectionTypeIds.insp1,
+        clientId: SEED_CLIENT_1_ID,
+        carId: SEED_CAR_1_ID,
+        inspectionTypeId: SEED_INSP_TYPE_COMPLETE_ID,
         paymentType: PaymentType.Card,
         price: 500,
         status: RequestStatus.InProgress,
         createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(), // Yesterday
-        employeeId: 'employee',
+        employeeId: SEED_EMPLOYEE_INSPECTOR_ID,
         inspectionData: {},
-        generalNotes: [{id: 'sample-note-1', text: 'تم فحص السيارة بشكل مبدئي.'}],
+        generalNotes: [{id: SEED_NOTE_GENERAL_1_ID, text: 'تم فحص السيارة بشكل مبدئي.'}],
         structuredFindings: [
-            { findingId: findingIds.find1, findingName: 'الصدام الأمامي', value: 'مرشوش', categoryId: categoryIds.cat1 },
-            { findingId: findingIds.find3, findingName: 'تهريب زيت المحرك', value: 'يوجد تسريب', categoryId: categoryIds.cat2 },
-            { findingId: findingIds.find7, findingName: 'الإطار الأمامي يمين', value: 'نصف عمر', categoryId: categoryIds.cat5 },
+            { findingId: SEED_FIND_FRONT_BUMPER_ID, findingName: 'الصدام الأمامي', value: 'مرشوش', categoryId: SEED_CAT_BODY_ID },
+            { findingId: SEED_FIND_ENGINE_OIL_LEAK_ID, findingName: 'تهريب زيت المحرك', value: 'يوجد تسريب', categoryId: SEED_CAT_ENGINE_ID },
+            { findingId: SEED_FIND_FRONT_RIGHT_TIRE_ID, findingName: 'الإطار الأمامي يمين', value: 'نصف عمر', categoryId: SEED_CAT_TIRES_ID },
         ],
         categoryNotes: {
-            [categoryIds.cat1]: [{id: 'sample-cat-note-1', text: 'رش تجميلي فقط.'}]
+            [SEED_CAT_BODY_ID]: [{id: SEED_NOTE_CATEGORY_1_ID, text: 'رش تجميلي فقط.'}]
         },
     }
 ];
 
 export const initialEmployees: Employee[] = [
     { 
-      id: 'admin', 
+      id: SEED_EMPLOYEE_ADMIN_ID, 
       name: 'المدير العام', 
       isGeneralManager: true, 
       permissions: { canCreateRequests: true, canManageClients: true, canViewReports: true, canAccessSettings: true },
@@ -153,7 +196,7 @@ export const initialEmployees: Employee[] = [
       profilePictureUrl: '' 
     },
     { 
-      id: 'manager', 
+      id: SEED_EMPLOYEE_MANAGER_ID, 
       name: 'مدير الوردية', 
       isGeneralManager: false,
       permissions: { canCreateRequests: true, canManageClients: true, canViewReports: true, canAccessSettings: false },
@@ -162,7 +205,7 @@ export const initialEmployees: Employee[] = [
       profilePictureUrl: '' 
     },
     { 
-      id: 'employee', 
+      id: SEED_EMPLOYEE_INSPECTOR_ID, 
       name: 'موظف فحص', 
       isGeneralManager: false,
       permissions: { canCreateRequests: true, canManageClients: false, canViewReports: false, canAccessSettings: false },
@@ -173,8 +216,8 @@ export const initialEmployees: Employee[] = [
 ];
 
 export const initialBrokers: Broker[] = [
-    { id: brokerIds.broker1, brokerNumber: 1, name: 'سمسار الخير', phone: '0598765432', defaultCommission: 50, isActive: true },
-    { id: brokerIds.broker2, brokerNumber: 2, name: 'سمسار آخر', phone: '0512345678', defaultCommission: 75, isActive: false },
+    { id: SEED_BROKER_1_ID, brokerNumber: 1, name: 'سمسار الخير', phone: '0598765432', defaultCommission: 50, isActive: true },
+    { id: SEED_BROKER_2_ID, brokerNumber: 2, name: 'سمسار آخر', phone: '0512345678', defaultCommission: 75, isActive: false },
 ];
 
 
